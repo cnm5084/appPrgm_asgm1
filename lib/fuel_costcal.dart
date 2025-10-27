@@ -17,7 +17,6 @@ class _FuelCostCalState extends State<Fuelcostcal> {
   double result = 0;
   final _formKey = GlobalKey<FormState>();
   String selectedLocation = 'Penisular Malaysia';
-  bool isEast = false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +76,6 @@ class _FuelCostCalState extends State<Fuelcostcal> {
                             border: OutlineInputBorder(),
                             errorStyle: TextStyle(fontSize: 10),
                           ),
-
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Distance can\'t be empty';
@@ -127,7 +125,6 @@ class _FuelCostCalState extends State<Fuelcostcal> {
                       Text('km/Liter'),
                     ],
                   ),
-
                   SizedBox(height: 15),
                   Row(
                     children: [
@@ -155,7 +152,8 @@ class _FuelCostCalState extends State<Fuelcostcal> {
                     visible: isVisible(),
                     maintainSize: true,
                     maintainState: true,
-                    maintainAnimation: true,
+                    maintainAnimation: true, // must use with maintainState
+                    // maintain layout
                     child: Row(
                       children: [
                         SizedBox(width: 8),
@@ -177,7 +175,7 @@ class _FuelCostCalState extends State<Fuelcostcal> {
                         ),
                       ],
                     ),
-                  ),
+                  ), // visibility: make location become invisible if diesel is not selected
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -189,7 +187,7 @@ class _FuelCostCalState extends State<Fuelcostcal> {
                               SnackBar(
                                 content: Text('Successful !'),
                                 duration: Duration(seconds: 3),
-                              ),
+                              ), // snackBar: show the message at the bottom
                             );
                           }
                           calculateFuelCost();
@@ -222,7 +220,6 @@ class _FuelCostCalState extends State<Fuelcostcal> {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.black)
                         ),
-
                         child: Text(
                           'Estimated fuel cost: RM${result.toStringAsFixed(2)}',
                           style: TextStyle(
@@ -230,11 +227,9 @@ class _FuelCostCalState extends State<Fuelcostcal> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
+                      ), // container that display total fuel cost calculated
                     ],
                   ),
-
-                  SizedBox(height: 20),
                 ],
               ),
             ),
@@ -258,9 +253,9 @@ class _FuelCostCalState extends State<Fuelcostcal> {
             ? result = (distance / efficiency) * 2.89
             : result = (distance / efficiency) * 2.15;
       }
-    }
+    } //only calculate when distance and car fuel efficiency not equal to null
     setState(() {});
-  } //check input is it null
+  } // carry out calculation
 
   void resetAll() {
     _formKey.currentState!.reset();
@@ -271,12 +266,12 @@ class _FuelCostCalState extends State<Fuelcostcal> {
       selectedLocation = 'Penisular Malaysia';
       result = 0.0;
     });
-  }
+  } // return default layout
 
   bool isVisible() {
     if (fuelType == 'Diesel') {
       return true;
     }
     return false;
-  }
+  } // control visibility by checking whether 'Diesel' is selected
 }
